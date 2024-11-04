@@ -10,7 +10,7 @@
     <h1>Bear Ninja Hunter Game</h1>
     <p id="welcomeMessage"></p>
     <p id="gameResult"></p>
-    
+
     <script>
         // Prompt the player to enter their name
         let playerName = prompt('Welcome to Bear Ninja Hunter! Please enter your name:');
@@ -23,14 +23,50 @@
         
         // Hard-coded computer choice
         let computerChoice = 'Bear';
-        
-        // Display the game result
-        let resultMessage = `${playerName}, you chose ${playerChoice}. The computer chose ${computerChoice}.`;
+
+        // Variables to hold the outcome message
+        let resultMessage = '';
+        let winnerMessage = '';
+
+        // Determine the winner using switch for the player's choice
+        switch (playerChoice) {
+            case 'Bear':
+                resultMessage = `${playerName}, you chose Bear. The computer chose Bear.`;
+                winnerMessage = "It's a Tie!";
+                break;
+            case 'Ninja':
+                resultMessage = `${playerName}, you chose Ninja. The computer chose Bear.`;
+                winnerMessage = `${playerName} Wins!`;
+                break;
+            case 'Hunter':
+                resultMessage = `${playerName}, you chose Hunter. The computer chose Bear.`;
+                winnerMessage = "Computer Wins!";
+                break;
+            default:
+                resultMessage = "Invalid choice! Please choose Bear, Ninja, or Hunter.";
+                winnerMessage = "No winner this time.";
+        }
+
+        // Use an if-else statement to check for the results
+        if (resultMessage.includes("Invalid choice")) {
+            // No need to check for winner if there's an invalid choice
+        } else {
+            if (winnerMessage === "It's a Tie!") {
+                // Additional logic for ties could go here if needed
+            } else if (winnerMessage === "Computer Wins!") {
+                // Logic for computer win could go here if needed
+            } else if (winnerMessage === `${playerName} Wins!`) {
+                // Logic for player win could go here if needed
+            }
+        }
+
+        // Output the results to the HTML page
         document.getElementById('welcomeMessage').innerHTML = `Welcome, ${playerName}!`;
-        document.getElementById('gameResult').innerHTML = resultMessage;
-        
+        document.getElementById('gameResult').innerHTML = `${resultMessage}<br>${winnerMessage}`;
+
         // Log the result to the console
         console.log(resultMessage);
+        console.log(winnerMessage);
     </script>
 </body>
 </html>
