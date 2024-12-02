@@ -7,46 +7,43 @@
 </head>
 <body>
     <h1>Bear Ninja Hunter Game</h1>
-    <p id="gameResult"></p>
     <script>
         const choices = ["bear", "ninja", "hunter"];
 
-    
         function playGame() {
             let playerName = prompt("Welcome to Bear Ninja Hunter! Please enter your name to get started:");
             
-            if (!playerName) {
-                alert("Please press F5 to Play Again.");
+            if (playerName === null || playerName.trim() === "") {
+                console.log("Please press F5 to play again.");
                 return;
             }
 
-            alert(`Hi ${playerName}! Let's play!!`);
+            console.log(`Hi ${playerName}! Let's play!!`);
 
             while (true) {
                 let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?");
                 
-                if (!playerChoice) {
-                    alert("Invalid entry, press F5 to play again.");
+                if (playerChoice === null || playerChoice.trim() === "") {
+                    console.log("Invalid entry, press F5 to play again.");
                     return;
                 }
                 
                 playerChoice = playerChoice.toLowerCase();
                 if (!choices.includes(playerChoice)) {
-                    alert("Invalid entry, press F5 to play again.");
+                    console.log("Invalid entry, press F5 to play again.");
                     return;
                 }
 
                 let computerChoice = choices[Math.floor(Math.random() * choices.length)];
                 
+                console.log("Get ready! Showing results in...");
+                
                 // Countdown logic
                 let count = 3;
-                alert(`Get ready! Showing results in...`);
-
                 const countdown = setInterval(() => {
-                    if (count >= 0) {
-                        alert(count);
-                        count--;
-                    } else {
+                    console.log(count);
+                    count--;
+                    if (count < 0) {
                         clearInterval(countdown);
                         displayResults(playerName, playerChoice, computerChoice);
                     }
@@ -72,14 +69,14 @@
             }
 
             let resultMessage = `${playerName}, you chose ${capitalize(playerChoice)}. The computer chose ${capitalize(computerChoice)}. ${result}`;
-            alert(resultMessage);
+            console.log(resultMessage);
 
             // Ask to play again
-            let playAgain = prompt(`${resultMessage}\n\nDo you want to play again? (yes or no)`).toLowerCase();
-            if (playAgain === "yes") {
-                playGame();
+            let playAgain = prompt(`${resultMessage}\n\nDo you want to play again? (yes or no)`);
+            if (playAgain === null || playAgain.trim().toLowerCase() !== "yes") {
+                console.log("Thank you for playing! Please press F5 to restart.");
             } else {
-                alert("Thank you for playing! Please press F5 to restart.");
+                playGame();
             }
         }
 
