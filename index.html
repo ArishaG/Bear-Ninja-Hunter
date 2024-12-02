@@ -85,15 +85,17 @@
                 The computer chose ${capitalize(computerChoice)}. <br> 
                 <strong>${result}</strong>`;
 
-            // Ensure results are shown before the alert prompt
+            // Show the result before prompting to play again
             setTimeout(() => {
-                let playAgain = confirm("Do you want to play again?");
-                if (playAgain) {
+                let playAgain = prompt("Do you want to play again? Type 'yes' or 'no':").toLowerCase();
+                if (playAgain === "yes") {
                     playGame();
-                } else {
+                } else if (playAgain === "no") {
                     document.getElementById("error").innerText = "Thank you for playing! Please press F5 to restart.";
+                } else {
+                    displayError("Invalid entry. Press F5 to play again.");
                 }
-            }, 500); // Short delay to ensure results display fully before prompt
+            }, 500);
         }
 
         function displayError(message) {
