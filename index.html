@@ -4,54 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bear Ninja Hunter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #countdown, #result, #error {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 <body>
     <h1>Bear Ninja Hunter Game</h1>
+    <div id="countdown"></div>
+    <div id="result"></div>
+    <div id="error"></div>
     <script>
         const choices = ["bear", "ninja", "hunter"];
 
         function playGame() {
+            document.getElementById("countdown").innerHTML = "";
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("error").innerHTML = "";
+
             let playerName = prompt("Welcome to Bear Ninja Hunter! Please enter your name to get started:");
-            
             if (playerName === null || playerName.trim() === "") {
-                console.log("Please press F5 to play again.");
+                displayError("Please press F5 to play again.");
                 return;
             }
 
-            console.log(`Hi ${playerName}! Let's play!!`);
+            document.getElementById("countdown").innerText = `Hi ${playerName}! Let's play!!`;
 
-            while (true) {
-                let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?");
-                
-                if (playerChoice === null || playerChoice.trim() === "") {
-                    console.log("Invalid entry, press F5 to play again.");
-                    return;
-                }
-                
-                playerChoice = playerChoice.toLowerCase();
-                if (!choices.includes(playerChoice)) {
-                    console.log("Invalid entry, press F5 to play again.");
-                    return;
-                }
-
-                let computerChoice = choices[Math.floor(Math.random() * choices.length)];
-                
-                console.log("Get ready! Showing results in...");
-                
-                // Countdown logic
-                let count = 3;
-                const countdown = setInterval(() => {
-                    console.log(count);
-                    count--;
-                    if (count < 0) {
-                        clearInterval(countdown);
-                        displayResults(playerName, playerChoice, computerChoice);
-                    }
-                }, 1000);
-
-                // Exit while loop after results are displayed.
-                break;
+            let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?");
+            if (playerChoice === null || playerChoice.trim() === "") {
+                displayError("Invalid entry. Press F5 to play again.");
+                return;
             }
+            
+            playerChoice = playerChoice.toLowerCase();
+            if (!choices.includes(playerChoice)) {
+                displayError("Invalid entry. Press F5 to play again.");
+                return;
+            }
+
+            let computerChoice = choices[Math.floor(Math.random() * choices.length)];
+
+            let count = 3;
+            const countdownElement = document.getElementById("countdown");
+            const countdownInterval = setInterval(() => {
+                countdownElement.innerText = `Get ready! Showing results in... ${count}`;
+                count--;
+                if (count < 0) {
+                    clearInterval(countdownInterval);
+                    displayResults(playerName, playerChoice, computerChoice);
+                }
+            }, 1000);
         }
 
         function displayResults(playerName, playerChoice, computerChoice) {
@@ -68,16 +77,22 @@
                 result = "You lose!";
             }
 
-            let resultMessage = `${playerName}, you chose ${capitalize(playerChoice)}. The computer chose ${capitalize(computerChoice)}. ${result}`;
-            console.log(resultMessage);
+            document.getElementById("result").innerHTML = `
+                ${playerName}, you chose ${capitalize(playerChoice)}. 
+                The computer chose ${capitalize(computerChoice)}. <br> 
+                <strong>${result}</strong>`;
 
-            // Ask to play again
-            let playAgain = prompt(`${resultMessage}\n\nDo you want to play again? (yes or no)`);
-            if (playAgain === null || playAgain.trim().toLowerCase() !== "yes") {
-                console.log("Thank you for playing! Please press F5 to restart.");
-            } else {
+            // Alert to ask to play again
+            let playAgain = confirm("Do you want to play again?");
+            if (playAgain) {
                 playGame();
+            } else {
+                document.getElementById("error").innerText = "Thank you for playing! Please press F5 to restart.";
             }
+        }
+
+        function displayError(message) {
+            document.getElementById("error").innerText = message;
         }
 
         function capitalize(str) {
