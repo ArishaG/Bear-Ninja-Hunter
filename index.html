@@ -4,79 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bear Ninja Hunter</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Bear Ninja Hunter Game</h1>
-    <p id="welcomeMessage"></p>
     <p id="gameResult"></p>
-    <p id="countdown"></p>
     <script>
-        const choices = ['Bear', 'Ninja', 'Hunter'];
+        const choices = ["bear", "ninja", "hunter"];
 
         function playGame() {
-            let playerName = prompt('Welcome to Bear Ninja Hunter! Please enter your name to get started:');
+            let playerName = prompt("Welcome to Bear Ninja Hunter! Please enter your name to get started:");
+            
             if (!playerName) {
                 alert("Please press F5 to Play Again.");
                 return;
             }
 
             alert(`Hi ${playerName}! Let's play!!`);
-            
+
             while (true) {
-                let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?").toLowerCase();
+                let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?");
                 
                 if (!playerChoice) {
                     alert("Invalid entry, press F5 to play again.");
                     return;
                 }
-
-                let validChoices = choices.map(choice => choice.toLowerCase());
-                if (!validChoices.includes(playerChoice)) {
+                
+                playerChoice = playerChoice.toLowerCase();
+                if (!choices.includes(playerChoice)) {
                     alert("Invalid entry, press F5 to play again.");
                     return;
                 }
-                
-                let computerChoice = choices[Math.floor(Math.random() * choices.length)];
 
-                document.getElementById('welcomeMessage').innerHTML = `Welcome, ${playerName}!`;
+                let computerChoice = choices[Math.floor(Math.random() * choices.length)];
                 
-                // Countdown from 3 to 0
-                let countdownElement = document.getElementById("countdown");
+                // Countdown logic
                 let count = 3;
-                countdownElement.innerHTML = "Get ready...";
-                
-                let interval = setInterval(() => {
-                    countdownElement.innerHTML = count;
-                    count--;
-                    if (count < 0) {
-                        clearInterval(interval);
+                alert(`Get ready! Showing results in...`);
+
+                const countdown = setInterval(() => {
+                    if (count >= 0) {
+                        alert(count);
+                        count--;
+                    } else {
+                        clearInterval(countdown);
                         displayResults(playerName, playerChoice, computerChoice);
                     }
                 }, 1000);
-                
+
+                // Exit while loop after results are displayed.
                 break;
             }
         }
 
         function displayResults(playerName, playerChoice, computerChoice) {
             let result;
-            if (playerChoice === computerChoice.toLowerCase()) {
+            if (playerChoice === computerChoice) {
                 result = "It's a tie!";
             } else if (
-                (playerChoice === "bear" && computerChoice === "Ninja") ||
-                (playerChoice === "ninja" && computerChoice === "Hunter") ||
-                (playerChoice === "hunter" && computerChoice === "Bear")
+                (playerChoice === "bear" && computerChoice === "ninja") ||
+                (playerChoice === "ninja" && computerChoice === "hunter") ||
+                (playerChoice === "hunter" && computerChoice === "bear")
             ) {
                 result = "You win!";
             } else {
                 result = "You lose!";
             }
 
-            let resultMessage = `${playerName}, you chose ${capitalize(playerChoice)}. The computer chose ${computerChoice}. ${result}`;
-            document.getElementById('gameResult').innerHTML = resultMessage;
-            console.log(resultMessage);
-            
+            let resultMessage = `${playerName}, you chose ${capitalize(playerChoice)}. The computer chose ${capitalize(computerChoice)}. ${result}`;
+            alert(resultMessage);
+
             // Ask to play again
             let playAgain = prompt(`${resultMessage}\n\nDo you want to play again? (yes or no)`).toLowerCase();
             if (playAgain === "yes") {
