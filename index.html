@@ -10,68 +10,88 @@
     <h1>Bear Ninja Hunter Game</h1>
     <p id="welcomeMessage"></p>
     <p id="gameResult"></p>
-    <p id="finalMessage"></p>
-
+    <p id="countdown"></p>
     <script>
-        // Game options array
-        const options = ['Bear', 'Ninja', 'Hunter'];
+        const choices = ['Bear', 'Ninja', 'Hunter'];
 
-        // Welcome prompt to get player name
-        let playerName = prompt('Welcome to Bear Ninja Hunter! Please enter your name:');
-        if (!playerName) {
-            alert('No name entered. Please refresh the page to play.');
-        } else {
-            alert(`Hello, ${playerName}! Get ready to play Bear Ninja Hunter!`);
-            document.getElementById('welcomeMessage').innerHTML = `Welcome, ${playerName}!`;
-        }
-
-        // Game loop
-        while (playerName) {
-            // Prompt player to choose
-            let playerChoice = prompt('Choose your character: Bear, Ninja, or Hunter').toLowerCase().trim();
-            playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1); // Force case
-
-            // Validate player choice
-            if (!options.includes(playerChoice)) {
-                alert("Invalid input! Please enter 'Bear', 'Ninja', or 'Hunter'.");
-                continue;
+        function playGame() {
+            let playerName = prompt('Welcome to Bear Ninja Hunter! Please enter your name to get started:');
+            if (!playerName) {
+                alert("Please press F5 to Play Again.");
+                return;
             }
 
-            // Generate random computer choice
-            const computerChoice = options[Math.floor(Math.random() * options.length)];
+            alert(`Hi ${playerName}! Let's play!!`);
+            
+            while (true) {
+                let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?").toLowerCase();
+                
+                if (!playerChoice) {
+                    alert("Invalid entry, press F5 to play again.");
+                    return;
+                }
 
-            // Countdown from 3 to 0
-            console.log("Countdown starting...");
-            for (let i = 3; i >= 0; i--) {
-                console.log(i);
-            }
+                let validChoices = choices.map(choice => choice.toLowerCase());
+                if (!validChoices.includes(playerChoice)) {
+                    alert("Invalid entry, press F5 to play again.");
+                    return;
+                }
+                
+                let computerChoice = choices[Math.floor(Math.random() * choices.length)];
 
-            // Determine the game result
-            let gameResult;
-            if (playerChoice === computerChoice) {
-                gameResult = `It's a tie! You both chose ${playerChoice}.`;
-            } else if (
-                (playerChoice === 'Bear' && computerChoice === 'Ninja') ||
-                (playerChoice === 'Ninja' && computerChoice === 'Hunter') ||
-                (playerChoice === 'Hunter' && computerChoice === 'Bear')
-            ) {
-                gameResult = `You win! ${playerChoice} beats ${computerChoice}.`;
-            } else {
-                gameResult = `You lose! ${computerChoice} beats ${playerChoice}.`;
-            }
-
-            // Display result
-            document.getElementById('gameResult').innerHTML = `${playerName}, you chose ${playerChoice}. The computer chose ${computerChoice}. ${gameResult}`;
-            console.log(`${playerName}, you chose ${playerChoice}. The computer chose ${computerChoice}. ${gameResult}`);
-
-            // Ask to play again
-            const playAgain = prompt('Do you want to play again? (yes/no)').toLowerCase().trim();
-            if (playAgain !== 'yes') {
-                alert(`Thanks for playing, ${playerName}! Goodbye!`);
-                document.getElementById('finalMessage').innerHTML = `Goodbye, ${playerName}! Thanks for playing!`;
+                document.getElementById('welcomeMessage').innerHTML = `Welcome, ${playerName}!`;
+                
+                // Countdown from 3 to 0
+                let countdownElement = document.getElementById("countdown");
+                let count = 3;
+                countdownElement.innerHTML = "Get ready...";
+                
+                let interval = setInterval(() => {
+                    countdownElement.innerHTML = count;
+                    count--;
+                    if (count < 0) {
+                        clearInterval(interval);
+                        displayResults(playerName, playerChoice, computerChoice);
+                    }
+                }, 1000);
+                
                 break;
             }
         }
+
+        function displayResults(playerName, playerChoice, computerChoice) {
+            let result;
+            if (playerChoice === computerChoice.toLowerCase()) {
+                result = "It's a tie!";
+            } else if (
+                (playerChoice === "bear" && computerChoice === "Ninja") ||
+                (playerChoice === "ninja" && computerChoice === "Hunter") ||
+                (playerChoice === "hunter" && computerChoice === "Bear")
+            ) {
+                result = "You win!";
+            } else {
+                result = "You lose!";
+            }
+
+            let resultMessage = `${playerName}, you chose ${capitalize(playerChoice)}. The computer chose ${computerChoice}. ${result}`;
+            document.getElementById('gameResult').innerHTML = resultMessage;
+            console.log(resultMessage);
+            
+            // Ask to play again
+            let playAgain = prompt(`${resultMessage}\n\nDo you want to play again? (yes or no)`).toLowerCase();
+            if (playAgain === "yes") {
+                playGame();
+            } else {
+                alert("Thank you for playing! Please press F5 to restart.");
+            }
+        }
+
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        // Start the game
+        playGame();
     </script>
 </body>
 </html>
