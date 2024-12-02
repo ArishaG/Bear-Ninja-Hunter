@@ -7,12 +7,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 50px;
+            text-align: left;
         }
         #countdown, #result, #error {
             margin-top: 20px;
-            font-size: 1.5em;
+            font-size: 1.2em;
+        }
+        h1 {
+            font-size: 2em;
         }
     </style>
 </head>
@@ -42,7 +45,7 @@
                 displayError("Invalid entry. Press F5 to play again.");
                 return;
             }
-            
+
             playerChoice = playerChoice.toLowerCase();
             if (!choices.includes(playerChoice)) {
                 displayError("Invalid entry. Press F5 to play again.");
@@ -82,13 +85,15 @@
                 The computer chose ${capitalize(computerChoice)}. <br> 
                 <strong>${result}</strong>`;
 
-            // Alert to ask to play again
-            let playAgain = confirm("Do you want to play again?");
-            if (playAgain) {
-                playGame();
-            } else {
-                document.getElementById("error").innerText = "Thank you for playing! Please press F5 to restart.";
-            }
+            // Ensure results are shown before the alert prompt
+            setTimeout(() => {
+                let playAgain = confirm("Do you want to play again?");
+                if (playAgain) {
+                    playGame();
+                } else {
+                    document.getElementById("error").innerText = "Thank you for playing! Please press F5 to restart.";
+                }
+            }, 500); // Short delay to ensure results display fully before prompt
         }
 
         function displayError(message) {
