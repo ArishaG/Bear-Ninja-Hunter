@@ -38,8 +38,7 @@
                 return;
             }
 
-            document.getElementById("countdown").innerText = `Hi ${playerName}! Let's play!!`;
-
+            alert(`Hi ${playerName}! Let's play!!`);
             let playerChoice = prompt("Who are you: Bear, Ninja, or Hunter?");
             if (playerChoice === null || playerChoice.trim() === "") {
                 displayError("Invalid entry. Press F5 to play again.");
@@ -85,12 +84,13 @@
                 The computer chose ${capitalize(computerChoice)}. <br> 
                 <strong>${result}</strong>`;
 
-            // Show the result before prompting to play again
             setTimeout(() => {
-                let playAgain = prompt("Do you want to play again? Type 'yes' or 'no':").toLowerCase();
-                if (playAgain === "yes") {
+                let playAgain = prompt("Do you want to play again? Type 'yes' or 'no':");
+                if (playAgain === null) {
+                    displayError("Please press F5 to play again.");
+                } else if (playAgain.toLowerCase() === "yes") {
                     playGame();
-                } else if (playAgain === "no") {
+                } else if (playAgain.toLowerCase() === "no") {
                     document.getElementById("error").innerText = "Thank you for playing! Please press F5 to restart.";
                 } else {
                     displayError("Invalid entry. Press F5 to play again.");
@@ -106,7 +106,6 @@
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
-        // Start the game
         playGame();
     </script>
 </body>
