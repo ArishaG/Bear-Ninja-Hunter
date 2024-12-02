@@ -4,33 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bear Ninja Hunter</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Bear Ninja Hunter Game</h1>
     <p id="welcomeMessage"></p>
     <p id="gameResult"></p>
-    
+    <p id="finalMessage"></p>
+
     <script>
-        // Prompt the player to enter their name
+        // Game options array
+        const options = ['Bear', 'Ninja', 'Hunter'];
+
+        // Welcome prompt to get player name
         let playerName = prompt('Welcome to Bear Ninja Hunter! Please enter your name:');
-        
-        // Greet the player with a personalized message
-        alert(`Hello, ${playerName}! Get ready to play Bear Ninja Hunter!`);
-        
-        // Prompt the player to make a choice
-        let playerChoice = prompt('Choose your character: Bear, Ninja, or Hunter');
-        
-        // Hard-coded computer choice
-        let computerChoice = 'Bear';
-        
-        // Display the game result
-        let resultMessage = `${playerName}, you chose ${playerChoice}. The computer chose ${computerChoice}.`;
-        document.getElementById('welcomeMessage').innerHTML = `Welcome, ${playerName}!`;
-        document.getElementById('gameResult').innerHTML = resultMessage;
-        
-        // Log the result to the console
-        console.log(resultMessage);
+        if (!playerName) {
+            alert('No name entered. Please refresh the page to play.');
+        } else {
+            alert(`Hello, ${playerName}! Get ready to play Bear Ninja Hunter!`);
+            document.getElementById('welcomeMessage').innerHTML = `Welcome, ${playerName}!`;
+        }
+
+        // Game loop
+        while (playerName) {
+            // Prompt player to choose
+            let playerChoice = prompt('Choose your character: Bear, Ninja, or Hunter').toLowerCase().trim();
+            playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1); // Force case
+
+            // Validate player choice
+            if (!options.includes(playerChoice)) {
+                alert("Invalid input! Please enter 'Bear', 'Ninja', or 'Hunter'.");
+                continue;
+            }
+
+            // Generate random computer choice
+            const computerChoice = options[Math.floor(Math.random() * options.length)];
+
+            // Countdown from 3 to 0
+            console.log("Countdown starting...");
+            for (let i = 3; i >= 0; i--) {
+                console.log(i);
+            }
+
+            // Determine the game result
+            let gameResult;
+            if (playerChoice === computerChoice) {
+                gameResult = `It's a tie! You both chose ${playerChoice}.`;
+            } else if (
+                (playerChoice === 'Bear' && computerChoice === 'Ninja') ||
+                (playerChoice === 'Ninja' && computerChoice === 'Hunter') ||
+                (playerChoice === 'Hunter' && computerChoice === 'Bear')
+            ) {
+                gameResult = `You win! ${playerChoice} beats ${computerChoice}.`;
+            } else {
+                gameResult = `You lose! ${computerChoice} beats ${playerChoice}.`;
+            }
+
+            // Display result
+            document.getElementById('gameResult').innerHTML = `${playerName}, you chose ${playerChoice}. The computer chose ${computerChoice}. ${gameResult}`;
+            console.log(`${playerName}, you chose ${playerChoice}. The computer chose ${computerChoice}. ${gameResult}`);
+
+            // Ask to play again
+            const playAgain = prompt('Do you want to play again? (yes/no)').toLowerCase().trim();
+            if (playAgain !== 'yes') {
+                alert(`Thanks for playing, ${playerName}! Goodbye!`);
+                document.getElementById('finalMessage').innerHTML = `Goodbye, ${playerName}! Thanks for playing!`;
+                break;
+            }
+        }
     </script>
 </body>
 </html>
